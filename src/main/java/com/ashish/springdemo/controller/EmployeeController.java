@@ -3,8 +3,9 @@ package com.ashish.springdemo.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ashish.springdemo.exception.ResourceNotFoundException;
@@ -21,12 +23,18 @@ import com.ashish.springdemo.model.Employee;
 import com.ashish.springdemo.model.EmployeeDTO;
 import com.ashish.springdemo.repository.EmployeeRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
+@CrossOrigin(
+    origins = "http://localhost:30008",
+    allowedHeaders = "*",
+    allowCredentials = "true",
+    methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS }
+)
 @RestController
 @RequestMapping("/api/v1")
 public class EmployeeController {
 
-    private static final Logger logger = Logger.getLogger(EmployeeController.class.getName());
+        private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 
     private final EmployeeRepository employeeRepository;
@@ -42,6 +50,7 @@ public class EmployeeController {
 
     @PostMapping("/employees")
     public Employee creatEmployee(@RequestBody EmployeeDTO employee){
+        logger.info("yess got it....");
         Employee e = new Employee();
         e.setFirstName(employee.getFirstName());
         e.setLastName(employee.getLastName());
